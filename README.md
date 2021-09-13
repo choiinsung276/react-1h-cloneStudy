@@ -106,3 +106,136 @@ function 제목바꾸기(){
 
 ## 상위 컴포넌트에서 state쓰려면 props 문법 이용해야됨
 
+---
+# 타입스크립트 코리아 : React with TypeScript 세미나
+
+## React ?
+- 리액트의 작업단위는 Component이다.
+- 컴포넌트 트리가 돔트리로 되는것
+## JSX?
+- javaScript XML-  JSX 자체는 문법
+- 리액트에서는 jsx.element로 그려질 컴포넌트로 표현
+- createElement 함수를 통해서도 jsx.element를 만들 수 있음.
+- 리액트 element를 2가지로 만들 수있음.
+
+## react.component-render
+- return jsx.element : 리액트가 그려준다.
+- 데이터(props, state)가 변하면 다시 render를 호출해서 그려준다.
+---
+## react with TypeScript 알고보면 복잡하다.
+- module bundler(webpack2, ..), react (react, react-dom)는 동일한데 loader가 다름
+- loader : ts-loader, tslint-loader(tslint, tslint-react)
+- react \@types/react , \types/react-dom 
+---
+## CRA 말고 직접 만드는게 있다. 굉장히 복잡해보인다.
+- 세미나 프로젝트에서의 react-ts
+- index.tsx 메인
+- 컴포넌트폴더에 컴포넌트들있고 app.tsx 등 여러가지있고
+- src를 기준으로 ts loader로 dist로 들어간다.
+- webpack.config.js 파일을 보면 entry와 output을 보면 input과 output을 알수있다.
+- resolve : 어떤파일들을 웹팩에서 해석할건지, 파일확장자
+- module , devserver 등등 설정있다.
+- tsconfig.json, tslint.json 
+- yarn start
+---
+## CRA 대단한거였구나 ~
+- Create react app 
+- 개발용 서버 실행 : npm run start
+- 프로덕션 빌드 : npm run build
+- 테스트 : npm run test 
+
+- npm i create-react-app -g
+- create-react-app my-app --typescirpt
+## 프로젝트 까보자
+- package.json 디펜던시, srcipt에 start,build, test등등
+- yarn start , yarn test 
+- tsconfig.json 
+- app.tsx(App 컴퓨넌트이자 샘플 컴포넌트, 클래스이름과 파일이름을 맞추는것이 관례)
+- app.css(APp 컴포넌트에서 쓰이는 스타일 일종의 암묵적 합의 
+- index.tsx : 메인 엔트리 파일 꼭대기에서 ReactDom.render를 수행 
+- index.css 글로벌 스타일 작성 
+- app.test.tsx : APP 컴포넌트에 대한 테스트 작성 파일 
+
+## interface와 useState 사용
+```
+interface IState{
+  people:{
+    name:string
+    age: number
+    url: string
+    note?: string
+  }[]
+}
+
+const [people, setPeople] = useState<IState["people"]>([])
+```
+
+## functional component 
+- 컴포넌트 폴더 만들고
+- 함수형 컴포넌트 작성후 app.tsx 에 import 하기 
+```List.tsx
+import React from "react";
+
+const List = () => {
+    return(
+        <div>
+            I am a list
+        </div>
+    )
+}
+
+export default List
+```
+- app.tsx에서 
+```
+<List />
+```
+## interface활용
+- List.tsx
+```
+import React from "react";
+
+interface IProps{
+    people:{
+      name:string
+      age: number
+      url: string
+      note?: string
+    }[]
+  }
+
+const List: React.FC<IProps>=({people}) => {
+    return(
+        <div>
+            I am a list
+        </div>
+    )
+}
+
+export default List
+```
+## 이해하기 
+1. useState로 interface 데이터 만들기
+2. app.tsx에서 해당 컴포넌트 태그로 쓰기.
+3. 해당 컴포넌트 작성하기
+4. FC return은 ul태그이고 ul태크 내용의 생산성을위해 함수로 정의.
+5. ul 태그안에 들어갈 함수의 반환은 JSX.Element배열
+6. interface 정보에맞게 태그들 만들기
+
+ 
+## 내용을 작성할 컴포넌트 하나 추가하기. 이름은 AddToList
+- 기본형 
+```
+import React from "react";
+
+const AddToList = () => {
+    return (
+        <div>
+            AddToList Component
+        </div>
+    )
+}
+
+export default AddToList
+```
+
